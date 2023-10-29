@@ -11,7 +11,7 @@
 using namespace std;
 class Controller{
     private: 
-    int* Keys = new int [100000];
+    int* Keys = new int [1000000];
     llist<int> list;
     public:
     Controller();
