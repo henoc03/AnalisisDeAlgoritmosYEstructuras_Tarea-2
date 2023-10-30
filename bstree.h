@@ -36,6 +36,7 @@ public:
 
     bstree() {
         // Constructor (crea un arbol vacio)
+        this->root = nullptr;
     };
     
     ~bstree() {
@@ -44,14 +45,61 @@ public:
     
     void Insert(bstnode<T>* z) {
         // Inserta el nodo z en la posicion que le corresponde en el arbol.
+        bstnode<T>* current = root;
+        if (this->root == nullptr) {
+            this->root = z;
+        } else {
+             while(true) {
+                if (z->key >= current->key){
+                    if (current->right == nullptr) {
+                        current->right = z;
+                        z->p = current;
+                        break;
+                    }else {
+                        current = current->right;
+                    }
+
+                }
+                if (z->key < current->key) {
+                    if (current->left == nullptr) {
+                        current->left = z;
+                        z->p = current;
+                        break;
+                    } else {
+                        current = current->left;
+                    }
+                }
+             }
+        }
+
     };
     
     void InorderWalk(bstnode<T> *x) {
-        // Recorre en orden el sub‡arbol con raiz x, imprimiendo la llave de cada nodo en en una nueva linea de la salida estandar despues de recorrido el subarbol izquierdo y antes de recorrer el subarbol derecho.
+        // Recorre en orden el subï¿½arbol con raiz x, imprimiendo la llave de cada nodo en en una nueva linea de la salida estandar despues de recorrido el subarbol izquierdo y antes de recorrer el subarbol derecho.
     };
     
     bstnode<T>* Search(bstnode<T> *x, const T& k) {
         // Busca la llave k recursivamente en el subarbol con raiz x. Si la encuentra devuelve un apuntador al nodo que la contiene, sino devuelve nullptr.
+        if (x == nullptr) {
+            return nullptr;
+        }else {
+            if (k >= x->key) {
+                if (x->key == k){
+                    return x;
+                } else {
+                    Search(x->right, k);
+                }
+            } else {
+                if (x->key == k) {
+                    return x;
+                } else {
+                    Search (x->left, k);
+                }
+            }
+        }
+        
+
+        //return nullptr;
     };
     
     bstnode<T>* IterativeSearch(bstnode<T> *x, const T& k) {
@@ -59,7 +107,7 @@ public:
     };
     
     bstnode<T>* Minimum(bstnode<T> *x) {
-        // Devuelve el nodo que tiene la llave menor. Si el arbol esta‡ vacio, devuelve nullptr.
+        // Devuelve el nodo que tiene la llave menor. Si el arbol estaï¿½ vacio, devuelve nullptr.
     };
     
     bstnode<T>* Maximum(bstnode<T> *x) {

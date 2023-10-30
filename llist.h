@@ -22,6 +22,9 @@ public:
     llnode (const T& k, llnode<T> *w = nullptr, llnode<T> *y = nullptr):key(k), prev(w), next(y)  {};
     
     ~llnode() {
+        this->next = nullptr;
+        this->prev = nullptr;
+        delete this->key;
     };
 };
 
@@ -61,7 +64,15 @@ public:
     };
         
     void Delete(llnode<T>* x) {
-        // Saca de la lista la llave contenida en el nodo apuntado por x.
+        llnode<int>* p = this->nil;
+        while(p != this->nil && p != x) {
+            p = p->next;
+        }
+        if (p != nil) {
+            p->next->prev = p->prev;
+            p->prev->next = p->next;
+            delete p;
+        }
        
 
     };    
