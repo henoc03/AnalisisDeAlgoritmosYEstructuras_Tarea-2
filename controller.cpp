@@ -134,6 +134,7 @@ void Controller::testListSearchs(){
     }
     cout<<"_________________________________________________________"<<endl
         << "Busquedas realizadas en 10s: "<<reached+failed<<endl
+        << "Fallidas: "<<failed<<endl
         <<"_________________________________________________________"<<endl
         <<"presione cualquier tecla para continuar"<<endl;
     cin.ignore();
@@ -164,11 +165,81 @@ void Controller::testBTreeSearchs(){
         cin >> option;
         switch (option)
         {
-        case 1:
+        case 1: {
             shuffleArray(1);
+            this->insertBTree();
+            int randKey = 0;
+            int failed = 0;
+            int reached = 0;
+            const int secondsTime = 10;
+            auto startTime = std::chrono::high_resolution_clock::now();
+            while (true) {
+                //semilla para generar los numeros random
+                srand (static_cast<unsigned>(time(nullptr)));
+                //Corre durante 10s y luego se detiene;
+                auto currentTime = chrono::high_resolution_clock::now();
+                auto duration = chrono::duration_cast<chrono::seconds>(currentTime - startTime);
+                if (duration.count() >= secondsTime) {
+                    break;
+                }
+                //2000000.1 da hasta 2000000 cerrado, pero 2000000.0 da hasta 1999999
+                randKey =  static_cast<int> (rand() * (static_cast<double>(2000000.0) / 32767)); 
+                bstnode<int>* found = this->binaryTree.Search(this->binaryTree.root, randKey);
+                if (found != nullptr) {
+                    ++reached;
+                }else {
+                    ++failed;
+                }
+            }
+            cout<<"_________________________________________________________"<<endl
+                << "Busquedas realizadas en 10s: "<<reached+failed<<endl
+                << "Fallidas: "<<failed<<endl
+                << "_________________________________________________________"<<endl
+                << "borrando..."<<endl;
+            this->binaryTree.~bstree();
+ 
+            cout <<"presione cualquier tecla para continuar"<<endl;
+            cin.ignore();
+            cin.ignore();
+                    
+        }
             break;
-        case 2:
-            shuffleArray(0);
+        case 2:{
+            this->binaryTree.orderedTree();
+            int randKey = 0;
+            int failed = 0;
+            int reached = 0;
+            const int secondsTime = 10;
+            auto startTime = std::chrono::high_resolution_clock::now();
+            while (true) {
+                //semilla para generar los numeros random
+                srand (static_cast<unsigned>(time(nullptr)));
+                //Corre durante 10s y luego se detiene;
+                auto currentTime = chrono::high_resolution_clock::now();
+                auto duration = chrono::duration_cast<chrono::seconds>(currentTime - startTime);
+                if (duration.count() >= secondsTime) {
+                    break;
+                }
+                //2000000.1 da hasta 2000000 cerrado, pero 2000000.0 da hasta 1999999
+                randKey =  static_cast<int> (rand() * (static_cast<double>(2000000.0) / 32767)); 
+                bstnode<int>* found = this->binaryTree.IterativeSearch(this->binaryTree.root, randKey);
+                if (found != nullptr) {
+                    ++reached;
+                }else {
+                    ++failed;
+                }
+            }
+            cout<<"_________________________________________________________"<<endl
+                << "Busquedas realizadas en 10s: "<<reached+failed<<endl
+                << "Fallidas: "<<failed<<endl
+                << "_________________________________________________________"<<endl
+                << "borrando..."<<endl;
+            this->binaryTree.~bstree();
+ 
+            cout <<"presione cualquier tecla para continuar"<<endl;
+            cin.ignore();
+            cin.ignore();
+        }
             break;
         case 3:
             menu();
@@ -180,43 +251,8 @@ void Controller::testBTreeSearchs(){
             this->testBTreeSearchs();
         }
 
-    this->insertBTree();
-
-    int randKey = 0;
-    int failed = 0;
-    int reached = 0;
-
-    const int secondsTime = 10;
-
-    auto startTime = std::chrono::high_resolution_clock::now();
-
-    while (true) {
-        //semilla para generar los numeros random
-        srand (static_cast<unsigned>(time(nullptr)));
-
-        //Corre durante 10s y luego se detiene;
-        auto currentTime = chrono::high_resolution_clock::now();
-        auto duration = chrono::duration_cast<chrono::seconds>(currentTime - startTime);
-        if (duration.count() >= secondsTime) {
-            break;
-        }
-        
-        //2000000.1 da hasta 2000000 cerrado, pero 2000000.0 da hasta 1999999
-        randKey =  static_cast<int> (rand() * (static_cast<double>(2000000.0) / 32767)); 
-        bstnode<int>* found = this->binaryTree.Search(this->binaryTree.root, randKey);
-        if (found != nullptr) {
-            ++reached;
-        }else {
-            ++failed;
-        }
-    }
-    cout<<"_________________________________________________________"<<endl
-        << "Busquedas realizadas en 10s: "<<reached+failed<<endl
-        << "Fallidas: "<<failed<<endl
-        <<"_________________________________________________________"<<endl
-        <<"presione cualquier tecla para continuar"<<endl;
-    cin.ignore();
-    cin.ignore();
+    
+    
 
     this->testBTreeSearchs();
 
