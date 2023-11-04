@@ -32,6 +32,8 @@ void Controller::menu(){
         this->testBTreeSearchs();
         this->menu();
         break;
+    case 3:
+        this->testRBTreeSearchs();
     case 5:
         break;
     default:
@@ -135,11 +137,13 @@ void Controller::testListSearchs(){
     cout<<"_________________________________________________________"<<endl
         << "Busquedas realizadas en 10s: "<<reached+failed<<endl
         << "Fallidas: "<<failed<<endl
-        <<"_________________________________________________________"<<endl
-        <<"presione cualquier tecla para continuar"<<endl;
+        << "_________________________________________________________"<<endl
+        << "borrando..."<<endl;
+    //this->list.~llist();
+ 
+    cout <<"presione cualquier tecla para continuar"<<endl;
     cin.ignore();
     cin.ignore();
-
     this->testListSearchs();
 }
 
@@ -256,4 +260,119 @@ void Controller::testBTreeSearchs(){
 
     this->testBTreeSearchs();
 
+}
+
+void Controller::insertRBTree() {
+    for (int i = 0; i < 1000000; ++i) {
+        rbtnode<int>* newNode = new rbtnode<int>(Keys[i]);
+        this->redBlackTree.Insert(newNode);
+    }
+}
+
+void Controller::testRBTreeSearchs() {
+    system("cls");
+    int option = 0;
+    cout<<"========================================================="<<endl
+        <<"                      Arboles rijinegro                  "<<endl
+        <<"_________________________________________________________"<<endl
+        <<"               Seleccione el tipo de insercion           "<<endl
+        <<"               1> Llaves aleatorias en [0, 2000000]      "<<endl
+        <<"               2> Llaves ordenadas en [0, 999999]        "<<endl
+        <<"               3> Salir                                  "<<endl
+        <<"_________________________________________________________"<<endl
+        <<"               >> ";
+        cin >> option;
+        switch (option)
+        {
+        case 1: {
+            shuffleArray(1);
+            this->insertRBTree();
+            int randKey = 0;
+            int failed = 0;
+            int reached = 0;
+            const int secondsTime = 10;
+            auto startTime = std::chrono::high_resolution_clock::now();
+            while (true) {
+                //semilla para generar los numeros random
+                srand (static_cast<unsigned>(time(nullptr)));
+                //Corre durante 10s y luego se detiene;
+                auto currentTime = chrono::high_resolution_clock::now();
+                auto duration = chrono::duration_cast<chrono::seconds>(currentTime - startTime);
+                if (duration.count() >= secondsTime) {
+                    break;
+                }
+                //2000000.1 da hasta 2000000 cerrado, pero 2000000.0 da hasta 1999999
+                randKey =  static_cast<int> (rand() * (static_cast<double>(2000000.0) / 32767)); 
+                rbtnode<int>* found = this->redBlackTree.Search(this->redBlackTree.root, randKey);
+                if (found != nullptr) {
+                    ++reached;
+                }else {
+                    ++failed;
+                }
+            }
+            cout<<"_________________________________________________________"<<endl
+                << "Busquedas realizadas en 10s: "<<reached+failed<<endl
+                << "Fallidas: "<<failed<<endl
+                << "_________________________________________________________"<<endl
+                << "borrando..."<<endl;
+            //No delete function
+ 
+            cout <<"presione cualquier tecla para continuar"<<endl;
+            cin.ignore();
+            cin.ignore();
+                    
+        }
+            break;
+        case 2:{
+            shuffleArray(0);
+            this->insertRBTree();
+            int randKey = 0;
+            int failed = 0;
+            int reached = 0;
+            const int secondsTime = 10;
+            auto startTime = std::chrono::high_resolution_clock::now();
+            while (true) {
+                //semilla para generar los numeros random
+                srand (static_cast<unsigned>(time(nullptr)));
+                //Corre durante 10s y luego se detiene;
+                auto currentTime = chrono::high_resolution_clock::now();
+                auto duration = chrono::duration_cast<chrono::seconds>(currentTime - startTime);
+                if (duration.count() >= secondsTime) {
+                    break;
+                }
+                //2000000.1 da hasta 2000000 cerrado, pero 2000000.0 da hasta 1999999
+                randKey =  static_cast<int> (rand() * (static_cast<double>(2000000.0) / 32767)); 
+                rbtnode<int>* found = this->redBlackTree.Search(this->redBlackTree.root, randKey);
+                if (found != nullptr) {
+                    ++reached;
+                }else {
+                    ++failed;
+                }
+            }
+            cout<<"_________________________________________________________"<<endl
+                << "Busquedas realizadas en 10s: "<<reached+failed<<endl
+                << "Fallidas: "<<failed<<endl
+                << "_________________________________________________________"<<endl
+                << "borrando..."<<endl;
+            this->binaryTree.~bstree();
+ 
+            cout <<"presione cualquier tecla para continuar"<<endl;
+            cin.ignore();
+            cin.ignore();
+        }
+            break;
+        case 3:
+            menu();
+            break;
+        default:
+            cout<<"       Opcion invalida, intenta de nuevo         "<<endl
+                <<"presione cualquier tecla para continuar"<<endl;
+            cin.ignore();
+            this->testBTreeSearchs();
+        }
+
+    
+    
+
+    this->testRBTreeSearchs();
 }

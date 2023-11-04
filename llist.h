@@ -22,9 +22,8 @@ public:
     llnode (const T& k, llnode<T> *w = nullptr, llnode<T> *y = nullptr):key(k), prev(w), next(y)  {};
     
     ~llnode() {
-        this->next = nullptr;
-        this->prev = nullptr;
-        delete this->key;
+        // this->next = nullptr;
+        // this->prev = nullptr;
     };
 };
 
@@ -44,6 +43,9 @@ public:
     
     ~llist() {
         // Destructor (borra la lista)
+        while (this->nil->next != this->nil) {
+            Delete(this->nil->next);
+        }
     };
     
     void Insert(llnode<T>* x) {

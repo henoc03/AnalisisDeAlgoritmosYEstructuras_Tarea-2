@@ -2,6 +2,7 @@
 #define Controller_h
 #include "llist.h"
 #include "bstree.h"
+#include "rbtree.h"
 //@libreries
 #include <ctime>
 #include <cstdlib>
@@ -15,6 +16,7 @@ class Controller{
     int* Keys = new int [1000000];
     llist<int> list;
     bstree<int> binaryTree;
+    rbtree<int> redBlackTree;
     public:
     Controller();
     ~Controller();

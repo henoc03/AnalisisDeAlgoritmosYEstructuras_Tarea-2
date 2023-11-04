@@ -6,7 +6,7 @@
 #define bstree_h
 
 #include <iostream>
-
+using namespace std;
 // Nodos del arbol:
 template <typename T>
 class bstnode
@@ -90,6 +90,13 @@ public:
     
     void InorderWalk(bstnode<T> *x) {
         // Recorre en orden el sub�arbol con raiz x, imprimiendo la llave de cada nodo en en una nueva linea de la salida estandar despues de recorrido el subarbol izquierdo y antes de recorrer el subarbol derecho.
+        if (x == nullptr) {
+            return;
+        }
+        
+        InorderWalk(x->left);
+        cout << x->key<<endl;
+        InorderWalk(x->right); 
     };
     
     bstnode<T>* Search(bstnode<T> *x, const T& k) {
