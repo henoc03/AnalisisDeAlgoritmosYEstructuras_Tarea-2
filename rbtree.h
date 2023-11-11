@@ -95,9 +95,9 @@ private:
     }
     void fixConflicts(rbtnode<T>* z) {
         while (z->p && z->p->color == RED) {
-            //caso 1 tio derecho rojo
             if (z->p == z->p->p->left) {
                 rbtnode<T>* uncle = z->p->p->right;
+                //caso 1 tio derecho rojo
                 if(uncle != this->nil && uncle->color == RED) {
                     //cambio de color padre y abuelo
                     z->p->color = BLACK;
