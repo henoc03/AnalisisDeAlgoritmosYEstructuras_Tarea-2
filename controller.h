@@ -3,6 +3,7 @@
 #include "llist.h"
 #include "bstree.h"
 #include "rbtree.h"
+#include "chasht.h"
 //@libreries
 #include <ctime>
 #include <cstdlib>
@@ -12,12 +13,15 @@
 
 using namespace std;
 class Controller{
-    private: 
+    
+private: 
     int* Keys = new int [1000000];
     llist<int> list;
     bstree<int> binaryTree;
     rbtree<int> redBlackTree;
-    public:
+    chtable<int> hashTable = chtable<int>(1000000);
+    
+public:
     Controller();
     ~Controller();
     void shuffleArray(int);
@@ -28,6 +32,8 @@ class Controller{
     void testBTreeSearchs();
     void insertRBTree();
     void testRBTreeSearchs();
+    void testHashTables();
+    void insertHashTable();
 
 
 };

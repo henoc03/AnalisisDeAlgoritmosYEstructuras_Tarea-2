@@ -1,6 +1,6 @@
 #include "controller.h"
 
-Controller::Controller(){
+Controller::Controller() {
 
 }
 Controller::~Controller(){
@@ -34,6 +34,9 @@ void Controller::menu(){
         break;
     case 3:
         this->testRBTreeSearchs();
+    case 4:
+        this->testHashTables();
+        break;
     case 5:
         break;
     default:
@@ -315,6 +318,7 @@ void Controller::testRBTreeSearchs() {
                 << "Fallidas: "<<failed<<endl
                 << "_________________________________________________________"<<endl
                 << "borrando..."<<endl;
+            this->redBlackTree.~rbtree();
             //No delete function
  
             cout <<"presione cualquier tecla para continuar"<<endl;
@@ -354,7 +358,7 @@ void Controller::testRBTreeSearchs() {
                 << "Fallidas: "<<failed<<endl
                 << "_________________________________________________________"<<endl
                 << "borrando..."<<endl;
-            this->binaryTree.~bstree();
+            this->redBlackTree.~rbtree();
  
             cout <<"presione cualquier tecla para continuar"<<endl;
             cin.ignore();
@@ -368,11 +372,127 @@ void Controller::testRBTreeSearchs() {
             cout<<"       Opcion invalida, intenta de nuevo         "<<endl
                 <<"presione cualquier tecla para continuar"<<endl;
             cin.ignore();
-            this->testBTreeSearchs();
+            this->testRBTreeSearchs();
         }
 
     
     
 
     this->testRBTreeSearchs();
+}
+
+void Controller::insertHashTable() {
+    for (int i = 0; i < 1000000; ++i) {
+        this->hashTable.Insert(Keys[i]);
+    }
+}
+
+void Controller::testHashTables() {
+    system("cls");
+    int option = 0;
+    cout<<"========================================================="<<endl
+        <<"                         Tablas hash                     "<<endl
+        <<"_________________________________________________________"<<endl
+        <<"               Seleccione el tipo de insercion           "<<endl
+        <<"               1> Llaves aleatorias en [0, 2000000]      "<<endl
+        <<"               2> Llaves ordenadas en [0, 999999]        "<<endl
+        <<"               3> Salir                                  "<<endl
+        <<"_________________________________________________________"<<endl
+        <<"               >> ";
+        cin >> option;
+        switch (option)
+        {
+        case 1: {
+            shuffleArray(1);
+            this->insertHashTable();
+            int randKey = 0;
+            int failed = 0;
+            int reached = 0;
+            const int secondsTime = 10;
+            auto startTime = std::chrono::high_resolution_clock::now();
+            while (true) {
+                //semilla para generar los numeros random
+                srand (static_cast<unsigned>(time(nullptr)));
+                //Corre durante 10s y luego se detiene;
+                auto currentTime = chrono::high_resolution_clock::now();
+                auto duration = chrono::duration_cast<chrono::seconds>(currentTime - startTime);
+                if (duration.count() >= secondsTime) {
+                    break;
+                }
+                //2000000.1 da hasta 2000000 cerrado, pero 2000000.0 da hasta 1999999
+                randKey =  static_cast<int> (rand() * (static_cast<double>(2000000.0) / 32767)); 
+                int* found = this->hashTable.Search(randKey);
+                if (found != nullptr) {
+                    ++reached;
+                }else {
+                    ++failed;
+                }
+            }
+            cout<<"_________________________________________________________"<<endl
+                << "Busquedas realizadas en 10s: "<<reached+failed<<endl
+                << "Fallidas: "<<failed<<endl
+                << "_________________________________________________________"<<endl
+                << "borrando..."<<endl;
+            this->hashTable.~chtable();
+            //this->hashTable = chtable<int>(1000000);
+ 
+            cout <<"presione cualquier tecla para continuar"<<endl;
+            cin.ignore();
+            cin.ignore();
+                    
+        }
+            break;
+        case 2:{
+            shuffleArray(0);
+            this->insertHashTable();
+            int randKey = 0;
+            int failed = 0;
+            int reached = 0;
+            const int secondsTime = 10;
+            auto startTime = std::chrono::high_resolution_clock::now();
+            while (true) {
+                //semilla para generar los numeros random
+                srand (static_cast<unsigned>(time(nullptr)));
+                //Corre durante 10s y luego se detiene;
+                auto currentTime = chrono::high_resolution_clock::now();
+                auto duration = chrono::duration_cast<chrono::seconds>(currentTime - startTime);
+                if (duration.count() >= secondsTime) {
+                    break;
+                }
+                //2000000.1 da hasta 2000000 cerrado, pero 2000000.0 da hasta 1999999
+                randKey =  static_cast<int> (rand() * (static_cast<double>(2000000.0) / 32767)); 
+                int* found = this->hashTable.Search(randKey);
+                if (found != nullptr) {
+                    ++reached;
+                }else {
+                    ++failed;
+                }
+            }
+            cout<<"_________________________________________________________"<<endl
+                << "Busquedas realizadas en 10s: "<<reached+failed<<endl
+                << "Fallidas: "<<failed<<endl
+                << "_________________________________________________________"<<endl
+                << "borrando..."<<endl;
+            this->hashTable.~chtable();
+           // this->hashTable = chtable<int>(1000000);
+ 
+            cout <<"presione cualquier tecla para continuar"<<endl;
+            cin.ignore();
+            cin.ignore();
+        }
+            break;
+        case 3:
+            menu();
+            break;
+        default:
+            cout<<"       Opcion invalida, intenta de nuevo         "<<endl
+                <<"presione cualquier tecla para continuar"<<endl;
+            cin.ignore();
+            this->testHashTables();
+        }
+
+    
+    
+
+    this->testHashTables();
 }

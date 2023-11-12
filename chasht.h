@@ -8,33 +8,58 @@
 #include <list>
 #include <vector>
 
+using namespace std;
 template <typename T>
 
-// Tabla de dispersión con encadenamiento
+// Tabla de dispersiï¿½n con encadenamiento
 class chtable {
 public:
-    // Constructor que especifica el tamaño de la tabla
-    chtable(int sz) {};
+
+    chtable(){
+    }
+    // Constructor que especifica el tamaï¿½o de la tabla
+    chtable(int sz) {
+        size = sz;
+        for (int i = 0; i < size;++i) {
+            table.push_back(list<T>());
+        }
+    };
         
     // Destructor (borra la tabla)
     ~chtable() {
+       for (int i = 0; i < size; ++i) {
+            list<T> lista = table[i];
+            lista.clear();
+        }  
+        table.clear();
     };
     
     // Inserta el elemento en la tabla
     void Insert(const T& k) {
+        int i = static_cast<int>(k % size);
+        table[i].push_front(k);
     };
     
     // Retorna un puntero a la llave o nullptr si no se encuentra
     T* Search(const T& k) {
+        int i = static_cast<int>(k % size);
+        list<T>& lista = table[i];
+
+        for (auto ite = lista.begin(); ite != lista.end(); ++ite) {
+            if (*ite == k) {
+                return &(*ite);
+            }
+        }
+        return nullptr;
     };
     
     
 private:
-    // Número de entradas en la tabla
+    // Nï¿½mero de entradas en la tabla
     int size;
     
     // La tabla es un vector de listas de STL
-    std::vector<std::list<T> > table;
+    vector<list<T> > table;
 };
 
 #endif /* chtable_h */

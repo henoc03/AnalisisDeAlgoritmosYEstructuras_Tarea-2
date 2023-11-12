@@ -21,6 +21,9 @@ public:
     
     // Constructor por omision.
     rbtnode() {
+        this->p = nullptr;
+        this->left = nullptr;
+        this->right = nullptr;
     };
     
     //Inicializacion de datos miembro.
@@ -143,6 +146,14 @@ private:
         }
         this->root->color = BLACK;
     }
+
+    void deleteRBTree(rbtnode<T>* x) {
+        if (x != this->nil) {
+            deleteRBTree(x->left);
+            deleteRBTree(x->right);
+            delete x;
+        }
+    }
 public:
     rbtnode<T> *root;    // raiz del arbol
     rbtnode<T> *nil;     // nodo nil (hoja) del arbol
@@ -155,6 +166,9 @@ public:
     }
     ~rbtree() {
         // Destructor (borra el arbol)
+        this->deleteRBTree(this->root);
+        this->root = this->nil;
+      
     };
     
     void Insert(rbtnode<T>* z) {
@@ -174,11 +188,19 @@ public:
     
     void InorderWalk(rbtnode<T> *x) {
         // Recorre en orden el subarbol con raiz x, imprimiendo la llave de cada nodo en en una nueva linea de la salida estandar despues de recorrido el subarbol izquierdo y antes de recorrer el subarbol derecho.
+        if (x == this->nil) {
+            return;
+        }
+        
+        InorderWalk(x->left);
+        cout << x->key<<endl;
+        InorderWalk(x->right); 
     };
     
     rbtnode<T>* Search(rbtnode<T> *x, const T& k) {
         // Busca la llave k iterativamente en el subarbol con raiz x. Si la encuentra devuelve un apuntador al nodo que la contiene, sino devuelve el nodo nil.
-        if (x == nullptr || x->key == k) {
+        //iba x == nullptr
+        if (x == this->nil || x->key == k) {
         return x;
         }
         
@@ -192,7 +214,8 @@ public:
     rbtnode<T>* IterativeSearch(rbtnode<T> *x, const T& k) {
         // Busca la llave k iterativamente en el subarbol con raiz x. Si la encuentra devuelve un apuntador al nodo que la contiene, sino devuelve el nodo nil.
         rbtnode<T>* current = x;
-        while (current != nullptr) {
+        //iba != nullptr
+        while (current != this->nil) {
             if (k == current->key) {
                 return current;
             } else if (k < current->key) {
@@ -206,15 +229,33 @@ public:
     
     rbtnode<T>* Minimum(rbtnode<T> *x) {
         // Devuelve el nodo que tiene la llave menor. Si el arbol esta vacio, devuelve el nodo nil.
-
+        while (x->left != this->nil) {
+            x = x->left;
+        }
+        return x;
     };
     
     rbtnode<T>* Maximum(rbtnode<T> *x) {
         // Devuelve el nodo que tiene la llave mayor. Si el arbol esta vacio devuelve el nodo nil.
+        while(x->right != this->nil) {
+            x = x->right;
+        }
+        return x;
     };
     
     rbtnode<T>* Successor(rbtnode<T> *x) {
         // Devuelve el nodo cuya llave es la que le sigue a la del nodo x. Si no existe el nodo, devuelve el nodo nil.
+         if(x->right != this->nil) {
+            return Minimum(x->right);
+        } else {
+
+            bstnode<T>* current = x->p;
+            while (current != this->nil && x == current->right) {
+                x = current;
+                current = current->p;
+            }
+            return current;
+        }
     };
 };
 
