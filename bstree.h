@@ -27,7 +27,7 @@ public:
     bstnode(const T& k, bstnode<T> *w = nullptr, bstnode<T> *y = nullptr, bstnode<T> *z = nullptr):key(k), p(w), left(y), right(z) {};
     
     ~bstnode() {
-     
+    
     };
 };
 
@@ -47,6 +47,7 @@ public:
         while (root != nullptr) {
             Delete(root);
         }
+        this->root = nullptr;
     };
     void orderedTree(){
         root = new bstnode<T>(0);

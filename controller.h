@@ -5,10 +5,11 @@
 #include "rbtree.h"
 #include "chasht.h"
 //@libreries
-#include <ctime>
-#include <cstdlib>
+//#include <ctime>
+//#include <cstdlib>
 #include <chrono>
-#include <thread>
+#include <random>
+//#include <thread>
 #include <iostream>
 
 using namespace std;

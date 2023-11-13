@@ -43,9 +43,17 @@ public:
     
     ~llist() {
         // Destructor (borra la lista)
-        while (this->nil->next != this->nil) {
-            Delete(this->nil->next);
+        llnode<T>* current = nil->next;
+        llnode<T>* nextNode = nullptr;
+
+        while (current != nil) {
+            nextNode = current->next;
+            delete current;
+            current = nextNode;
         }
+
+        nil->next = nil;
+        nil->prev = nil;
     };
     
     void Insert(llnode<T>* x) {
@@ -66,7 +74,7 @@ public:
     };
         
     void Delete(llnode<T>* x) {
-        llnode<int>* p = this->nil;
+        llnode<T>* p = this->nil;
         while(p != this->nil && p != x) {
             p = p->next;
         }

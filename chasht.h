@@ -27,7 +27,7 @@ public:
         
     // Destructor (borra la tabla)
     ~chtable() {
-       for (int i = 0; i < size; ++i) {
+       for (unsigned i = 0; i < static_cast<unsigned>(size); ++i) {
             list<T> lista = table[i];
             lista.clear();
         }  
@@ -36,13 +36,15 @@ public:
     
     // Inserta el elemento en la tabla
     void Insert(const T& k) {
-        int i = static_cast<int>(k % size);
+        //static_cast<int>(k);
+        unsigned i = static_cast<unsigned>(k) % static_cast<unsigned>(size);
+        //i = static_cast<int>(i);
         table[i].push_front(k);
     };
     
     // Retorna un puntero a la llave o nullptr si no se encuentra
     T* Search(const T& k) {
-        int i = static_cast<int>(k % size);
+        unsigned i = static_cast<unsigned>(k) % static_cast<unsigned>(size);
         list<T>& lista = table[i];
 
         for (auto ite = lista.begin(); ite != lista.end(); ++ite) {

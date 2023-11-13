@@ -53,10 +53,16 @@ void Controller::shuffleArray(int n){
     */
 
     if (n == 1) {
-        srand (static_cast<unsigned>(time(nullptr)));
-        for (int i = 0; i < 1000000; ++i) {
-            //2000000.1 da hasta 2000000 cerrado, pero 2000000.0 da hasta 1999999
-            this->Keys[i] = static_cast<int> (rand() * (static_cast<double>(2000000.0) / 32767)); 
+
+        auto seed = chrono::high_resolution_clock::now().time_since_epoch().count();
+        seed_seq seed_sequence{static_cast<unsigned int>(seed)};
+        
+        mt19937 gen(seed_sequence);
+        
+        uniform_int_distribution<> distribution(0, 1999999);
+
+        for (int i = 0; i < 1000000; ++i) { 
+            this->Keys[i] = distribution(gen);
         }
     }
     if (n == 0) {
@@ -118,8 +124,12 @@ void Controller::testListSearchs(){
     auto startTime = std::chrono::high_resolution_clock::now();
 
     while (true) {
-        //semilla para generar los numeros random
-        srand (static_cast<unsigned>(time(nullptr)));
+        auto seed = chrono::high_resolution_clock::now().time_since_epoch().count();
+        seed_seq seed_sequence{static_cast<unsigned int>(seed)};
+        
+        mt19937 gen(seed_sequence);
+        
+        uniform_int_distribution<> distribution(0, 1999999);
 
         //Corre durante 10s y luego se detiene;
         auto currentTime = chrono::high_resolution_clock::now();
@@ -128,8 +138,7 @@ void Controller::testListSearchs(){
             break;
         }
         
-        //2000000.1 da hasta 2000000 cerrado, pero 2000000.0 da hasta 1999999
-        randKey =  static_cast<int> (rand() * (static_cast<double>(2000000.0) / 32767)); 
+        randKey =  distribution(gen); 
         llnode<int>* found = this->list.Search(randKey);
         if (found != this->list.nil) {
             ++reached;
@@ -142,7 +151,7 @@ void Controller::testListSearchs(){
         << "Fallidas: "<<failed<<endl
         << "_________________________________________________________"<<endl
         << "borrando..."<<endl;
-    //this->list.~llist();
+    this->list.~llist();
  
     cout <<"presione cualquier tecla para continuar"<<endl;
     cin.ignore();
@@ -181,8 +190,14 @@ void Controller::testBTreeSearchs(){
             const int secondsTime = 10;
             auto startTime = std::chrono::high_resolution_clock::now();
             while (true) {
-                //semilla para generar los numeros random
-                srand (static_cast<unsigned>(time(nullptr)));
+                auto seed = chrono::high_resolution_clock::now().time_since_epoch().count();
+                seed_seq seed_sequence{static_cast<unsigned int>(seed)};
+                
+                mt19937 gen(seed_sequence);
+                
+                uniform_int_distribution<> distribution(0, 1999999);
+
+                
                 //Corre durante 10s y luego se detiene;
                 auto currentTime = chrono::high_resolution_clock::now();
                 auto duration = chrono::duration_cast<chrono::seconds>(currentTime - startTime);
@@ -190,7 +205,7 @@ void Controller::testBTreeSearchs(){
                     break;
                 }
                 //2000000.1 da hasta 2000000 cerrado, pero 2000000.0 da hasta 1999999
-                randKey =  static_cast<int> (rand() * (static_cast<double>(2000000.0) / 32767)); 
+                randKey =  distribution(gen);
                 bstnode<int>* found = this->binaryTree.Search(this->binaryTree.root, randKey);
                 if (found != nullptr) {
                     ++reached;
@@ -219,8 +234,13 @@ void Controller::testBTreeSearchs(){
             const int secondsTime = 10;
             auto startTime = std::chrono::high_resolution_clock::now();
             while (true) {
-                //semilla para generar los numeros random
-                srand (static_cast<unsigned>(time(nullptr)));
+                auto seed = chrono::high_resolution_clock::now().time_since_epoch().count();
+                seed_seq seed_sequence{static_cast<unsigned int>(seed)};
+                
+                mt19937 gen(seed_sequence);
+                
+                uniform_int_distribution<> distribution(0, 1999999);
+
                 //Corre durante 10s y luego se detiene;
                 auto currentTime = chrono::high_resolution_clock::now();
                 auto duration = chrono::duration_cast<chrono::seconds>(currentTime - startTime);
@@ -228,7 +248,7 @@ void Controller::testBTreeSearchs(){
                     break;
                 }
                 //2000000.1 da hasta 2000000 cerrado, pero 2000000.0 da hasta 1999999
-                randKey =  static_cast<int> (rand() * (static_cast<double>(2000000.0) / 32767)); 
+                randKey =  distribution(gen);
                 bstnode<int>* found = this->binaryTree.IterativeSearch(this->binaryTree.root, randKey);
                 if (found != nullptr) {
                     ++reached;
@@ -276,7 +296,7 @@ void Controller::testRBTreeSearchs() {
     system("cls");
     int option = 0;
     cout<<"========================================================="<<endl
-        <<"                      Arboles rijinegro                  "<<endl
+        <<"                      Arboles rojinegros                 "<<endl
         <<"_________________________________________________________"<<endl
         <<"               Seleccione el tipo de insercion           "<<endl
         <<"               1> Llaves aleatorias en [0, 2000000]      "<<endl
@@ -296,8 +316,13 @@ void Controller::testRBTreeSearchs() {
             const int secondsTime = 10;
             auto startTime = std::chrono::high_resolution_clock::now();
             while (true) {
-                //semilla para generar los numeros random
-                srand (static_cast<unsigned>(time(nullptr)));
+                auto seed = chrono::high_resolution_clock::now().time_since_epoch().count();
+                seed_seq seed_sequence{static_cast<unsigned int>(seed)};
+                
+                mt19937 gen(seed_sequence);
+                
+                uniform_int_distribution<> distribution(0, 1999999);
+                
                 //Corre durante 10s y luego se detiene;
                 auto currentTime = chrono::high_resolution_clock::now();
                 auto duration = chrono::duration_cast<chrono::seconds>(currentTime - startTime);
@@ -305,9 +330,9 @@ void Controller::testRBTreeSearchs() {
                     break;
                 }
                 //2000000.1 da hasta 2000000 cerrado, pero 2000000.0 da hasta 1999999
-                randKey =  static_cast<int> (rand() * (static_cast<double>(2000000.0) / 32767)); 
+                randKey =  distribution(gen);
                 rbtnode<int>* found = this->redBlackTree.Search(this->redBlackTree.root, randKey);
-                if (found != nullptr) {
+                if (found != this->redBlackTree.nil) {
                     ++reached;
                 }else {
                     ++failed;
@@ -336,18 +361,23 @@ void Controller::testRBTreeSearchs() {
             const int secondsTime = 10;
             auto startTime = std::chrono::high_resolution_clock::now();
             while (true) {
-                //semilla para generar los numeros random
-                srand (static_cast<unsigned>(time(nullptr)));
+                auto seed = chrono::high_resolution_clock::now().time_since_epoch().count();
+                seed_seq seed_sequence{static_cast<unsigned int>(seed)};
+                
+                mt19937 gen(seed_sequence);
+                
+                uniform_int_distribution<> distribution(0, 1999999);
+
                 //Corre durante 10s y luego se detiene;
                 auto currentTime = chrono::high_resolution_clock::now();
                 auto duration = chrono::duration_cast<chrono::seconds>(currentTime - startTime);
                 if (duration.count() >= secondsTime) {
                     break;
                 }
-                //2000000.1 da hasta 2000000 cerrado, pero 2000000.0 da hasta 1999999
-                randKey =  static_cast<int> (rand() * (static_cast<double>(2000000.0) / 32767)); 
+                
+                randKey = distribution(gen); 
                 rbtnode<int>* found = this->redBlackTree.Search(this->redBlackTree.root, randKey);
-                if (found != nullptr) {
+                if (found != this->redBlackTree.nil) {
                     ++reached;
                 }else {
                     ++failed;
@@ -411,8 +441,13 @@ void Controller::testHashTables() {
             const int secondsTime = 10;
             auto startTime = std::chrono::high_resolution_clock::now();
             while (true) {
-                //semilla para generar los numeros random
-                srand (static_cast<unsigned>(time(nullptr)));
+                auto seed = chrono::high_resolution_clock::now().time_since_epoch().count();
+                seed_seq seed_sequence{static_cast<unsigned int>(seed)};
+                
+                mt19937 gen(seed_sequence);
+                
+                uniform_int_distribution<> distribution(0, 1999999);
+                
                 //Corre durante 10s y luego se detiene;
                 auto currentTime = chrono::high_resolution_clock::now();
                 auto duration = chrono::duration_cast<chrono::seconds>(currentTime - startTime);
@@ -420,7 +455,7 @@ void Controller::testHashTables() {
                     break;
                 }
                 //2000000.1 da hasta 2000000 cerrado, pero 2000000.0 da hasta 1999999
-                randKey =  static_cast<int> (rand() * (static_cast<double>(2000000.0) / 32767)); 
+                randKey = distribution(gen);
                 int* found = this->hashTable.Search(randKey);
                 if (found != nullptr) {
                     ++reached;
@@ -451,8 +486,13 @@ void Controller::testHashTables() {
             const int secondsTime = 10;
             auto startTime = std::chrono::high_resolution_clock::now();
             while (true) {
-                //semilla para generar los numeros random
-                srand (static_cast<unsigned>(time(nullptr)));
+                auto seed = chrono::high_resolution_clock::now().time_since_epoch().count();
+                seed_seq seed_sequence{static_cast<unsigned int>(seed)};
+                
+                mt19937 gen(seed_sequence);
+                
+                uniform_int_distribution<> distribution(0, 1999999);
+                
                 //Corre durante 10s y luego se detiene;
                 auto currentTime = chrono::high_resolution_clock::now();
                 auto duration = chrono::duration_cast<chrono::seconds>(currentTime - startTime);
@@ -460,7 +500,7 @@ void Controller::testHashTables() {
                     break;
                 }
                 //2000000.1 da hasta 2000000 cerrado, pero 2000000.0 da hasta 1999999
-                randKey =  static_cast<int> (rand() * (static_cast<double>(2000000.0) / 32767)); 
+                randKey = distribution(gen);
                 int* found = this->hashTable.Search(randKey);
                 if (found != nullptr) {
                     ++reached;
